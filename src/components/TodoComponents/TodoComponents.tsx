@@ -6,9 +6,10 @@ export const TodoComponents = () => {
     const [todos, setTodos] = useState<ITodo[]>([]);
 
     useEffect(() => {
-        fetch('https://jsonplaceholder.typicode.com/todos')
+        fetch('https://dummyjson.com/todos')
             .then((response) => response.json())
-            .then((data:ITodo[]) => setTodos(data.slice(0, 100)));
+            .then((data:{todos:ITodo[]}) => setTodos(data.todos))
+            .catch((error) => console.error("Error fetching todos:", error));
 
         return () => {
             console.log('done');
