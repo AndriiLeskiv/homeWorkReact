@@ -13,7 +13,19 @@ export const userService = {
             });
     }
 }
-
+export const allUsersPagination = {
+    getUsersPagination: async (page: string):Promise<IUser[]> => {
+        const limit = 30;
+        const skip = limit * (+page) - limit;
+        return await fetch(urls.users.allUsersPagination + skip)
+            .then(response => response.json())
+            .then(data => data.users)
+            .catch((error) => {
+                console.error("Error fetching users:", error);
+                return [];
+            });
+    }
+}
 export const postService = {
     getPosts: async ():Promise<IPost[]> => {
         return await fetch(urls.posts.allPosts)
