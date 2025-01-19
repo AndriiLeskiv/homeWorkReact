@@ -1,4 +1,4 @@
-import {ICart} from "../../models/ICart.ts";
+import {ICart} from "../../models/carts/ICart.ts";
 import {FC} from "react";
 
 type Props = {
@@ -16,6 +16,3 @@ export const CartComponent:FC<Props> = ({cart}) => {
         </div>
     );
 };
-
-
-

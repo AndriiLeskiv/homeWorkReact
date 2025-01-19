@@ -1,21 +1,20 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {ICart} from "../../models/ICart.ts";
-import {ICartResponseModel} from "../../models/ICartResponseModel.ts";
+import {ICart} from "../../models/carts/ICart.ts";
+import {ICartResponseModel} from "../../models/carts/ICartResponseModel.ts";
+import {CartComponent} from "../cart/CartComponent.tsx";
 import {cartService} from "../../services/api.service.ts";
-import {CartComponent} from "../cart-component/CartComponent.tsx";
 
 export const CartsComponent = () => {
-
     const {id} = useParams();
-
     const [carts, setCarts] = useState<ICart[]>([]);
+
     useEffect(() => {
         if (id){
             cartService.getCartsOfUser(id)
-                .then(({carts}:ICartResponseModel) => setCarts(carts));
+            .then(({carts}:ICartResponseModel) => setCarts(carts));
         }
-    },[id]);
+    }, [id]);
     return (
         <div>
             {

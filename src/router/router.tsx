@@ -3,7 +3,6 @@ import {MainLayout} from "../layouts/MainLayout.tsx"
 import {UsersPage} from "../pages/UsersPage.tsx";
 import {CartsPage} from "../pages/CartsPage.tsx";
 
-
 export const routes = createBrowserRouter([{
     path: '/', element: <MainLayout/>,
     children:[
