@@ -1,9 +1,13 @@
 import {useSearchParams} from "react-router-dom";
-import './PaginationComponents.css'
+import './PaginationComponents.css';
 
-export const PaginationComponent = () => {
+interface PaginationComponentProps {
+    totalPages: number;
+}
+
+export const PaginationComponent = ({ totalPages }: PaginationComponentProps) => {
     const [query, setQuery] = useSearchParams({page: '1'})
-    const page = query.get('page');
+    const page = parseInt(query.get('page') || '1', 10);
 
     return (
         <div className="flex space-x-4">
@@ -14,16 +18,19 @@ export const PaginationComponent = () => {
                         setQuery({page: (--currentPage).toString()})
                     }
                 }
-            }}>prev
+            }}
+                disabled={+page <= 1}>
+                prev
             </button>
             <button onClick={() => {
                 if (page) {
                     let currentPage = +page;
                     setQuery({page: (++currentPage).toString()})
                 }
-            }}>next
+            }}
+                disabled={page === totalPages} >
+                next
             </button>
-
         </div>
     );
 };

@@ -14,15 +14,15 @@ export const userService = {
     }
 }
 export const allUsersPagination = {
-    getUsersPagination: async (page: string):Promise<IUser[]> => {
+    getUsersPagination: async (page: string): Promise<{ users: IUser[], totalUsers: number }> => {
         const limit = 30;
         const skip = limit * (+page) - limit;
         return await fetch(urls.users.allUsersPagination + skip)
             .then(response => response.json())
-            .then(data => data.users)
+            .then(data => ({ users: data.users, totalUsers: data.total }))
             .catch((error) => {
                 console.error("Error fetching users:", error);
-                return [];
+                return { users: [], totalUsers: 0 };
             });
     }
 }
