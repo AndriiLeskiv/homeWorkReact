@@ -8,7 +8,6 @@ import {cartService} from "../../services/api.service.ts";
 export const CartsComponent = () => {
     const {id} = useParams();
     const [carts, setCarts] = useState<ICart[]>([]);
-
     useEffect(() => {
         if (id){
             cartService.getCartsOfUser(id)
