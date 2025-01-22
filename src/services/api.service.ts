@@ -1,86 +1,62 @@
-import {urls} from "../constants/url.ts";
-import {ICars} from "../models/cars/ICars.ts";
+import {axiosInstance} from "../constants/url.ts";
+import { ICars } from "../models/cars/ICars.ts";
 
-export const carsService = {
-    getAllCars: async () => {
+interface CarService {
+    getAllCars: () => Promise<ICars[]>;
+    createCar: (car: ICars) => Promise<ICars>;
+    updateCar: (id: number, car: ICars) => Promise<ICars>;
+    deleteCar: (id: number) => Promise<boolean>;
+    getCarById: (id: number) => Promise<ICars | null>;
+}
+
+export const carsService: CarService = {
+    getAllCars: async ():Promise<ICars[]> => {
         try {
-            const response = await fetch(urls.cars.getCars);
-            if (!response.ok) {
-                throw new Error("Failed to fetch cars");
-            }
-            return await response.json();
+            const response = await axiosInstance.get('/cars');
+            return response.data;
         } catch (error) {
             console.error("Error fetching cars:", error);
             return [];
         }
     },
 
-    createCar: async (car:ICars) => {
+    createCar: async (car: ICars):Promise<ICars> => {
         try {
-            const response = await fetch(urls.cars.getCars, {
-                method: "POST",
-                headers: {"Content-Type": "application/json",},
-                body: JSON.stringify(car),
-            });
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || "Failed to create car");
-            }
-            return await response.json();
+            const response = await axiosInstance.post('/cars', car);
+            return response.data;
         } catch (error) {
             console.error("Error creating car:", error);
             throw error;
         }
     },
 
-    updateCar: async (id:number, car:ICars) => {
+    updateCar: async (id: number, car: ICars): Promise<ICars>  => {
         try {
-            const response = await fetch(urls.cars.updateCar(id), {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(car),
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || "Failed to update car");
-            }
-
-            return await response.json();
+            const response = await axiosInstance.put('/cars/' + id, car);
+            return response.data;
         } catch (error) {
             console.error("Error updating car:", error);
             throw error;
         }
     },
 
-    deleteCar: async (id:number) => {
+    deleteCar: async (id: number): Promise<boolean>  => {
         try {
-            const response = await fetch(urls.cars.deleteCar(id), {
-                method: "DELETE",
-            });
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || "Failed to delete car");
-            }
-            return true;
+            const response = await axiosInstance.delete('/cars/' + id);
+            return response.status === 200;
         } catch (error) {
             console.error("Error deleting car:", error);
             throw error;
         }
     },
 
-    getCarById: async (id:number) => {
+    getCarById: async (id: number): Promise<ICars | null> => {
         try {
-            const response = await fetch(urls.cars.getCarById(id));
-            if (!response.ok) {
-                throw new Error("Failed to fetch car by ID");
-            }
-            return await response.json();
+            const response = await axiosInstance.get('/cars/' + id);
+            return response.data;
         } catch (error) {
             console.error("Error fetching car by ID:", error);
             return null;
         }
     },
-}
+};
